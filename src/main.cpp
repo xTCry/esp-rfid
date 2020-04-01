@@ -256,6 +256,7 @@ void ICACHE_RAM_ATTR loop()
 #endif
 		writeLatest("", "(used open/close button)", 1);
 		activateRelay[0] = true;
+		mqtt_publish_button(now());
 	}
 
 	if (wifipin != 255 && configMode && !wmode)

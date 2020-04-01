@@ -61,6 +61,26 @@ void mqtt_publish_boot(time_t boot_time, String const &wifi, String const &ip) {
 }
 
 
+void mqtt_publish_button(time_t press_time) {
+	if (!mqttClient.connected()) return;
+	
+	String stopic (mqttTopic);
+	DynamicJsonBuffer jsonBuffer;
+	
+	stopic = stopic + "/send";
+	JsonObject &root = jsonBuffer.createObject();
+	root["type"] = "button";
+	root["time"] = press_time;
+	root["door"] = deviceHostname;
+	String mqttBuffer;
+	root.printTo(mqttBuffer);
+	mqttClient.publish(stopic.c_str(), 0, false, mqttBuffer.c_str());
+#ifdef DEBUG
+	Serial.print("[ INFO ] Mqtt Publish:");
+	Serial.println(mqttBuffer);
+#endif
+}
+
 
 void mqtt_publish_heartbeat(time_t heartbeat) {
 	String stopic (mqttTopic);
