@@ -291,6 +291,33 @@ void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties 
 		f.close();
 		return;
 	}
+
+
+	for (int currentRelay = 0; currentRelay < numRelays ; currentRelay++) {
+		char strOn[16];
+		char strOff[16];
+		sprintf(strOn, "relay_%d_on", currentRelay);
+		sprintf(strOff, "relay_%d_off", currentRelay);
+		if (strcmp(command, strOn) == 0){
+			#ifdef DEBUG
+				Serial.print("[ INFO ] Activated relay: ");
+				Serial.println(currentRelay + 1);
+			#endif
+			activateRelay[currentRelay] = true;
+			previousMillis = millis();
+			return;
+		}
+		if (strcmp(command, strOff) == 0){
+			#ifdef DEBUG
+				Serial.print("[ INFO ] Deactivated relay: ");
+				Serial.println(currentRelay + 1);
+			#endif
+			deactivateRelay[currentRelay] = true;
+			previousMillis = millis();
+			return;
+		}
+	}
+
 	return;
 }
 

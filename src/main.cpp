@@ -344,7 +344,39 @@ void ICACHE_RAM_ATTR loop()
 				deactivateRelay[currentRelay] = false;
 			}
 		}
+		else if (lockType[currentRelay] == LOCKTYPE_TOGGLE)
+		{
+			if (activateRelay[currentRelay])
+			{
+				// currently OFF, need to switch ON
+				if (digitalRead(relayPin[currentRelay]) == !relayType[currentRelay])
+				{
+#ifdef DEBUG
+					Serial.print("mili : ");
+					Serial.println(millis());
+					Serial.printf("activating relay %d now\n", currentRelay);
+#endif
+					digitalWrite(relayPin[currentRelay], relayType[currentRelay]);
+					activateRelay[currentRelay] = false;
+				}
+			}
+			if (deactivateRelay[currentRelay])
+			{
+				// currently ON, need to switch OFF
+				if (digitalRead(relayPin[currentRelay]) == relayType[currentRelay])
+				{
+#ifdef DEBUG
+					Serial.print("mili : ");
+					Serial.println(millis());
+					Serial.printf("deactivating relay %d now\n",currentRelay);
+#endif
+					digitalWrite(relayPin[currentRelay], !relayType[currentRelay]);
+					deactivateRelay[currentRelay] = false;
+				}
+			}
+		}
 	}
+
 	if (formatreq)
 	{
 #ifdef DEBUG
