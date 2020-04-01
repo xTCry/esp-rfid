@@ -63,6 +63,11 @@ bool ICACHE_FLASH_ATTR loadConfiguration()
 		}
 	}
 
+	if (hardware.containsKey("btnOnlyMQTT"))
+	{
+		btnOnlyMQTT = hardware["btnOnlyMQTT"];
+	}
+
 	if (hardware.containsKey("numrelays"))
 	{
 		numRelays = hardware["numrelays"];

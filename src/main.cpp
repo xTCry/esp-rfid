@@ -117,6 +117,7 @@ uint8_t doorstatpin = 255;
 uint8_t lastDoorState = 0;
 
 uint8_t openlockpin = 255;
+uint8_t btnOnlyMQTT = 0;
 #define LEDoff HIGH
 #define LEDon LOW
 
@@ -255,7 +256,10 @@ void ICACHE_RAM_ATTR loop()
 		Serial.println("Button has been pressed");
 #endif
 		writeLatest("", "(used open/close button)", 1);
-		activateRelay[0] = true;
+		if(btnOnlyMQTT == 0)
+		{
+			activateRelay[0] = true;
+		}
 		mqtt_publish_button(now());
 	}
 
