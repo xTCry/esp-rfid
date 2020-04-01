@@ -89,12 +89,12 @@ String ICACHE_FLASH_ATTR NtpClient::iso8601DateTime() {
 	String colon = ":";
 
 	return	String(year()) + hyphen +
-	        zeroPaddedIntVal(month()) + hyphen +
-	        zeroPaddedIntVal(day()) + "T" +
-	        zeroPaddedIntVal(hour()) + colon +
-	        zeroPaddedIntVal(minute()) + colon +
-	        zeroPaddedIntVal(second()) +
-	        (timezone == 0 ? "Z" : String(timezone));
+			zeroPaddedIntVal(month()) + hyphen +
+			zeroPaddedIntVal(day()) + "T" +
+			zeroPaddedIntVal(hour()) + colon +
+			zeroPaddedIntVal(minute()) + colon +
+			zeroPaddedIntVal(second()) +
+			(timezone == 0 ? "Z" : String(timezone));
 }
 
 time_t NtpClient::getUptimeSec() {
@@ -121,9 +121,9 @@ String ICACHE_FLASH_ATTR NtpClient::getDeviceUptimeString() {
 	deviceUptime uptime = getDeviceUptime();
 
 	return	String(uptime.days) + " days, " +
-	        String(uptime.hours) + " hours, " +
-	        String(uptime.mins) + " mins, " +
-	        String(uptime.secs) + " secs";
+			String(uptime.hours) + " hours, " +
+			String(uptime.mins) + " mins, " +
+			String(uptime.secs) + " secs";
 
 }
 
@@ -133,5 +133,4 @@ String ICACHE_FLASH_ATTR NtpClient::getDeviceUptimeString() {
 ICACHE_FLASH_ATTR time_t NtpClient::getUtcTimeNow() {
 
 	return now() - timezone;
-
 }

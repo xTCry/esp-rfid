@@ -90,7 +90,7 @@ void mqtt_publish_heartbeat(time_t heartbeat) {
 	JsonObject &root 	 = jsonBuffer.createObject();
 	root["type"] 		 = "heartbeat";
 	root["time"] 		 = heartbeat;
-    root["ip"]   		 = WiFi.localIP().toString();
+	root["ip"]			 = WiFi.localIP().toString();
 	root["door"] 		 = deviceHostname;
 	
 	String mqttBuffer4;
@@ -110,8 +110,8 @@ void mqtt_publish_access(time_t accesstime, String const &isknown, String const 
 		DynamicJsonBuffer jsonBuffer;
 		JsonObject &root = jsonBuffer.createObject();
 		// log to MQTT adding cmd command
-		if (mqttEvents){  
-        	root["cmd"] = "log";
+		if (mqttEvents) {
+			root["cmd"] = "log";
 		}
 		root["type"] = "access";
 		root["time"] = accesstime;
@@ -196,8 +196,8 @@ void DeleteAllUserFiles(){
 void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
 	char jjson[total + 1] ;
 	memcpy(jjson,payload,total);
-    jjson[total+1]='\0';
-	String espIp =  WiFi.localIP().toString();
+	jjson[total+1] = '\0';
+	String espIp = WiFi.localIP().toString();
 	Serial.println(espIp);
 	StaticJsonBuffer<255> jsonBuffer;
 	#ifdef DEBUG
@@ -234,8 +234,8 @@ void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties 
 	}
 	
 	////////////////////////////////////////////////////////////
-  	// CASE FOR MQTT 
-  	////////////////////////////////////////////////////////////
+	// CASE FOR MQTT 
+	////////////////////////////////////////////////////////////
 	const char *command = root["cmd"];
 	// Check whatever the command is and act accordingly
 	if (strcmp(command, "getuser") == 0){
@@ -299,11 +299,11 @@ void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties 
 
 void onMqttSubscribe(uint16_t packetId, uint8_t qos) {
 	#ifdef DEBUG
-  		Serial.println("[ INFO ] Subscribe acknowledged.");
-  		Serial.print("[ INFO ]packetId: ");
-  		Serial.println(packetId);
-  		Serial.print("[ INFO ]  qos: ");
-  		Serial.println(qos);
+		Serial.println("[ INFO ] Subscribe acknowledged.");
+		Serial.print("[ INFO ]packetId: ");
+		Serial.println(packetId);
+		Serial.print("[ INFO ]  qos: ");
+		Serial.println(qos);
 	#endif
 }
 
@@ -323,8 +323,7 @@ void onMqttConnect(bool sessionPresent) {
 	
 	#ifdef DEBUG
 		Serial.print("[ INFO ] Subscribing at QoS 2, packetId: ");
-  		Serial.println(packetIdSub);
+	Serial.println(packetIdSub);
 	#endif
-  	
 
 }

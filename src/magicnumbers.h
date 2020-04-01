@@ -28,9 +28,9 @@
 // hardware defines
 
 #ifdef OFFICIALBOARD
-    #define MAX_NUM_RELAYS 1
+	#define MAX_NUM_RELAYS 1
 #else
-    #define MAX_NUM_RELAYS 4
+	#define MAX_NUM_RELAYS 4
 #endif
 
 #define LOCKTYPE_MOMENTARY 0

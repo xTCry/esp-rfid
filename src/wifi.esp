@@ -38,7 +38,7 @@ bool ICACHE_FLASH_ATTR startAP(IPAddress apip, IPAddress apsubnet, int hid, cons
 	Serial.print(F("[ INFO ] Configuring access point... "));
 #endif
 
-  	WiFi.softAPConfig(apip, apip, apsubnet);
+	WiFi.softAPConfig(apip, apip, apsubnet);
 
 	bool success;
 	if (hid == 1)

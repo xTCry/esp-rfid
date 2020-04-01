@@ -277,8 +277,8 @@ void ICACHE_RAM_ATTR loop()
 
 	if (doorstatpin != 255)
 	{
-    doorStatus();
-    delay(1);
+		doorStatus();
+		delay(1);
 	}
 
 	if (currentMillis >= cooldown)
@@ -289,12 +289,35 @@ void ICACHE_RAM_ATTR loop()
 	// Continuous relay mode
 
 	for (int currentRelay = 0; currentRelay < numRelays ; currentRelay++){
-	  if (lockType[currentRelay] == LOCKTYPE_CONTINUOUS)
+		if (lockType[currentRelay] == LOCKTYPE_CONTINUOUS)
 		{
-		if (activateRelay[currentRelay])
+			if (activateRelay[currentRelay])
+			{
+				// currently OFF, need to switch ON
+				if (digitalRead(relayPin[currentRelay]) == !relayType[currentRelay])
+				{
+#ifdef DEBUG
+					Serial.print("mili : ");
+					Serial.println(millis());
+					Serial.printf("activating relay %d now\n",currentRelay);
+#endif
+					digitalWrite(relayPin[currentRelay], relayType[currentRelay]);
+				}
+				else	// currently ON, need to switch OFF
+				{
+#ifdef DEBUG
+					Serial.print("mili : ");
+					Serial.println(millis());
+					Serial.printf("deactivating relay %d now\n",currentRelay);
+#endif
+					digitalWrite(relayPin[currentRelay], !relayType[currentRelay]);
+				}
+				activateRelay[currentRelay] = false;
+			}
+		}
+		else if (lockType[currentRelay] == LOCKTYPE_MOMENTARY)	// momentary relay mode
 		{
-			// currently OFF, need to switch ON
-			if (digitalRead(relayPin[currentRelay]) == !relayType[currentRelay])
+			if (activateRelay[currentRelay])
 			{
 #ifdef DEBUG
 				Serial.print("mili : ");
@@ -302,48 +325,25 @@ void ICACHE_RAM_ATTR loop()
 				Serial.printf("activating relay %d now\n",currentRelay);
 #endif
 				digitalWrite(relayPin[currentRelay], relayType[currentRelay]);
+				previousMillis = millis();
+				activateRelay[currentRelay] = false;
+				deactivateRelay[currentRelay] = true;
 			}
-			else	// currently ON, need to switch OFF
+			else if ((currentMillis - previousMillis >= activateTime[currentRelay]) && (deactivateRelay[currentRelay]))
 			{
 #ifdef DEBUG
+				Serial.println(currentMillis);
+				Serial.println(previousMillis);
+				Serial.println(activateTime[currentRelay]);
+				Serial.println(activateRelay[currentRelay]);
+				Serial.println("deactivate relay after this");
 				Serial.print("mili : ");
 				Serial.println(millis());
-				Serial.printf("deactivating relay %d now\n",currentRelay);
 #endif
 				digitalWrite(relayPin[currentRelay], !relayType[currentRelay]);
+				deactivateRelay[currentRelay] = false;
 			}
-			activateRelay[currentRelay] = false;
 		}
-	  }
-	  else if (lockType[currentRelay] == LOCKTYPE_MOMENTARY)	// momentary relay mode
-	  {
-		if (activateRelay[currentRelay])
-		{
-#ifdef DEBUG
-			Serial.print("mili : ");
-			Serial.println(millis());
-			Serial.printf("activating relay %d now\n",currentRelay);
-#endif
-			digitalWrite(relayPin[currentRelay], relayType[currentRelay]);
-			previousMillis = millis();
-			activateRelay[currentRelay] = false;
-			deactivateRelay[currentRelay] = true;
-		}
-		else if ((currentMillis - previousMillis >= activateTime[currentRelay]) && (deactivateRelay[currentRelay]))
-		{
-#ifdef DEBUG
-			Serial.println(currentMillis);
-			Serial.println(previousMillis);
-			Serial.println(activateTime[currentRelay]);
-			Serial.println(activateRelay[currentRelay]);
-			Serial.println("deactivate relay after this");
-			Serial.print("mili : ");
-			Serial.println(millis());
-#endif
-			digitalWrite(relayPin[currentRelay], !relayType[currentRelay]);
-			deactivateRelay[currentRelay] = false;
-		}
-	  }
 	}
 	if (formatreq)
 	{
