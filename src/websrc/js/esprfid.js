@@ -139,6 +139,15 @@ function handleLock(xnum) {
   }
 }
 
+function handleLockPin() {
+  var lPin = parseInt(document.getElementById("openlockpin").value);
+  if (lPin === 255) {
+    document.getElementById("activateOnlyMQTT").style.display = "none";
+  } else {
+    document.getElementById("activateOnlyMQTT").style.display = "block";
+  }
+}
+
 function listhardware() {
   document.getElementById("lockType").value = config.hardware.ltype;
   document.getElementById("typerly").value = config.hardware.rtype;
@@ -146,6 +155,7 @@ function listhardware() {
   document.getElementById("wifipin").value = config.hardware.wifipin;
   document.getElementById("doorstatpin").value = config.hardware.doorstatpin;
   document.getElementById("openlockpin").value = config.hardware.openlockpin;
+  document.getElementById("btnOnlyMQTT").value = config.hardware.btnOnlyMQTT;
   if (isOfficialBoard) {
     document.getElementById("readertype").value = 1;
     document.getElementById("wg0pin").value = 5;
@@ -178,6 +188,7 @@ function listhardware() {
   }
   handleReader();
   handleLock();
+  handleLockPin();
 }
 
 function listlog() {
@@ -224,6 +235,7 @@ function savehardware() {
   config.hardware.wifipin = parseInt(document.getElementById("wifipin").value);
   config.hardware.doorstatpin = parseInt(document.getElementById("doorstatpin").value);
   config.hardware.openlockpin = parseInt(document.getElementById("openlockpin").value);
+  config.hardware.btnOnlyMQTT = parseInt(document.getElementById("btnOnlyMQTT").value);
   config.hardware["numrelays"] = numRelays; 
 
   for (var i = 2; i<=numRelays; i++)
